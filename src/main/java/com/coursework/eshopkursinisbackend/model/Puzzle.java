@@ -1,5 +1,7 @@
 package com.coursework.eshopkursinisbackend.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,17 +14,15 @@ import java.util.List;
 @Entity
 public class Puzzle extends Product {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "product_gen")
-    private int id;
-
     private int piecesQuantity;
     private String puzzleSize;
     private String puzzleMaterial;
 
     @OneToMany(mappedBy = "puzzle", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @JsonManagedReference
     private List<Review> reviews;
     @ManyToOne
+    @JsonBackReference
     private CustomerOrder customerOrder;
 
     public Puzzle() {

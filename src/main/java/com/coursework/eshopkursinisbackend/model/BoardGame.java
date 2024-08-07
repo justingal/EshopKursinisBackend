@@ -1,5 +1,7 @@
 package com.coursework.eshopkursinisbackend.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -7,17 +9,16 @@ import lombok.Setter;
 import java.util.List;
 
 
+@Getter
+@Setter
 @Entity
 public class BoardGame extends Product {
-    @Setter
-    @Getter
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "product_gen")
-    private int id;
     @ManyToOne
+    @JsonBackReference
     private CustomerOrder customerOrder;
 
     @OneToMany(mappedBy = "boardGame", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @JsonManagedReference
     private List<Review> reviews;
     @Getter
     private String playersQuantity;

@@ -1,5 +1,8 @@
 package com.coursework.eshopkursinisbackend.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,16 +13,19 @@ import java.io.Serializable;
 @Setter
 @Getter
 @MappedSuperclass
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Product implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "product_gen")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "product_seq_gen")
+    @SequenceGenerator(name = "product_seq_gen", sequenceName = "product_sequence", allocationSize = 1)
     int id;
     String title;
     String description;
     String author;
     double price;
     @ManyToOne
+    @JsonBackReference
     private Warehouse warehouse;
 
     public Product() {

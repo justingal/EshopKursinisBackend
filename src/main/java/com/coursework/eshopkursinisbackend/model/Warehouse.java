@@ -1,5 +1,8 @@
 package com.coursework.eshopkursinisbackend.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,6 +18,7 @@ import java.util.List;
 @Setter
 @Getter
 @Entity
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Warehouse implements Serializable {
 
     @Id
@@ -24,12 +28,15 @@ public class Warehouse implements Serializable {
     private String address;
     @OneToMany(mappedBy = "warehouse", cascade = CascadeType.ALL)
     @Fetch(FetchMode.SELECT)
+    @JsonManagedReference
     private List<Puzzle> inStockPuzzles;
     @OneToMany(mappedBy = "warehouse", cascade = CascadeType.ALL)
     @Fetch(FetchMode.SELECT)
+    @JsonManagedReference
     private List<BoardGame> inStockBoardGames;
     @OneToMany(mappedBy = "warehouse", cascade = CascadeType.ALL)
     @Fetch(FetchMode.SELECT)
+    @JsonManagedReference
     private List<Dice> inStockDices;
 
     public Warehouse() {
