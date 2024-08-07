@@ -1,5 +1,6 @@
 package com.coursework.eshopkursinisbackend.handlers;
 
+import com.coursework.eshopkursinisbackend.exceptions.UserNotFoundException;
 import com.coursework.eshopkursinisbackend.exceptions.WarehouseNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +13,12 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(WarehouseNotFoundException.class)
     public ResponseEntity<?> handleWarehouseNotFoundException(WarehouseNotFoundException ex, WebRequest request) {
-        return new ResponseEntity<>("Failed to delete the warehouse: " + ex.getMessage(), HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<?> handleUserNotFoundException(UserNotFoundException ex, WebRequest request) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 
 }
