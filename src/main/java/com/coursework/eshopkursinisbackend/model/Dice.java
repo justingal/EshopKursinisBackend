@@ -15,10 +15,10 @@ import java.util.List;
 public class Dice extends Product {
 
     @OneToMany(mappedBy = "dice", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    @JsonManagedReference
+    @JsonManagedReference("dice-review")
     private List<Review> reviews;
     @ManyToOne
-    @JsonBackReference
+    @JsonBackReference("order-dice")
     private CustomerOrder customerOrder;
     int diceNumber;
 

@@ -14,11 +14,11 @@ import java.util.List;
 @Entity
 public class BoardGame extends Product {
     @ManyToOne
-    @JsonBackReference
+    @JsonBackReference("order-boardgame")
     private CustomerOrder customerOrder;
 
     @OneToMany(mappedBy = "boardGame", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    @JsonManagedReference
+    @JsonManagedReference("boardgame-review")
     private List<Review> reviews;
     @Getter
     private String playersQuantity;

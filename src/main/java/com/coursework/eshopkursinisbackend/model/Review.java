@@ -1,5 +1,6 @@
 package com.coursework.eshopkursinisbackend.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 import lombok.Getter;
@@ -16,16 +17,19 @@ public class Review extends Comment {
     @ManyToOne
     @Fetch(FetchMode.SELECT)
     @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonBackReference("puzzle-review")
     private Puzzle puzzle;
 
     @ManyToOne
     @Fetch(FetchMode.SELECT)
     @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonBackReference("boardgame-review")
     private BoardGame boardGame;
 
     @ManyToOne
     @Fetch(FetchMode.SELECT)
     @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonBackReference("dice-review")
     private Dice dice;
 
 

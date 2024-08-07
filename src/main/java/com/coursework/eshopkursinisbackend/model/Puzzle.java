@@ -19,10 +19,10 @@ public class Puzzle extends Product {
     private String puzzleMaterial;
 
     @OneToMany(mappedBy = "puzzle", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    @JsonManagedReference
+    @JsonManagedReference("puzzle-review")
     private List<Review> reviews;
     @ManyToOne
-    @JsonBackReference
+    @JsonBackReference("order-puzzle")
     private CustomerOrder customerOrder;
 
     public Puzzle() {

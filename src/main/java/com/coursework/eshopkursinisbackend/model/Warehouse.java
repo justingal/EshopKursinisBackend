@@ -28,15 +28,12 @@ public class Warehouse implements Serializable {
     private String address;
     @OneToMany(mappedBy = "warehouse", cascade = CascadeType.ALL)
     @Fetch(FetchMode.SELECT)
-    @JsonManagedReference
     private List<Puzzle> inStockPuzzles;
     @OneToMany(mappedBy = "warehouse", cascade = CascadeType.ALL)
     @Fetch(FetchMode.SELECT)
-    @JsonManagedReference
     private List<BoardGame> inStockBoardGames;
     @OneToMany(mappedBy = "warehouse", cascade = CascadeType.ALL)
     @Fetch(FetchMode.SELECT)
-    @JsonManagedReference
     private List<Dice> inStockDices;
 
     public Warehouse() {

@@ -25,7 +25,6 @@ public class Product implements Serializable {
     String author;
     double price;
     @ManyToOne
-    @JsonBackReference
     private Warehouse warehouse;
 
     public Product() {
