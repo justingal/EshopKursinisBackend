@@ -3,10 +3,14 @@ package com.coursework.eshopkursinisbackend.model;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.List;
 
+@Setter
+@Getter
 @Entity
 public class Customer extends User {
 
@@ -36,30 +40,6 @@ public class Customer extends User {
         super(login, password, birthDate, name, surname);
         this.address = address;
         this.cardNo = cardNo;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getCardNo() {
-        return cardNo;
-    }
-
-    public void setCardNo(String cardNo) {
-        this.cardNo = cardNo;
-    }
-
-    public List<CustomerOrder> getUserCustomerOrder() {
-        return userCustomerOrder;
-    }
-
-    public void setUserCustomerOrder(List<CustomerOrder> userCustomerOrder) {
-        this.userCustomerOrder = userCustomerOrder;
     }
 
 }

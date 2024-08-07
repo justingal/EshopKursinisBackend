@@ -1,10 +1,14 @@
 package com.coursework.eshopkursinisbackend.model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
 
+@Getter
+@Setter
 @Entity
 public class Dice extends Product {
 
@@ -48,29 +52,5 @@ public class Dice extends Product {
         this.diceNumber = diceNumber;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getDiceNumber() {
-        return diceNumber;
-    }
-
-    public void setDiceNumber(int diceNumber) {
-        this.diceNumber = diceNumber;
-    }
-
-    public List<Review> getReviews() {
-        return reviews;
-    }
-
-    public void setReviews(List<Review> reviews) {
-        this.reviews = reviews;
-    }
-
-
 }
+

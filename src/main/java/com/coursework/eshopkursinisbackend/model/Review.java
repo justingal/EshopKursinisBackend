@@ -2,28 +2,29 @@ package com.coursework.eshopkursinisbackend.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.annotations.*;
 
+@Setter
+@Getter
 @Entity
 public class Review extends Comment {
 
     private double rating;
 
     @ManyToOne
-    @LazyCollection(LazyCollectionOption.FALSE)
+    @Fetch(FetchMode.SELECT)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Puzzle puzzle;
 
     @ManyToOne
-    @LazyCollection(LazyCollectionOption.FALSE)
+    @Fetch(FetchMode.SELECT)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private BoardGame boardGame;
 
     @ManyToOne
-    @LazyCollection(LazyCollectionOption.FALSE)
+    @Fetch(FetchMode.SELECT)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Dice dice;
 
@@ -60,38 +61,6 @@ public class Review extends Comment {
 
     public Review() {
 
-    }
-
-    public double getRating() {
-        return rating;
-    }
-
-    public void setRating(double rating) {
-        this.rating = rating;
-    }
-
-    public Puzzle getPuzzle() {
-        return puzzle;
-    }
-
-    public void setPuzzle(Puzzle puzzle) {
-        this.puzzle = puzzle;
-    }
-
-    public BoardGame getBoardGame() {
-        return boardGame;
-    }
-
-    public void setBoardGame(BoardGame boardGame) {
-        this.boardGame = boardGame;
-    }
-
-    public Dice getDice() {
-        return dice;
-    }
-
-    public void setDice(Dice dice) {
-        this.dice = dice;
     }
 
 

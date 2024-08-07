@@ -1,6 +1,10 @@
 package com.coursework.eshopkursinisbackend.model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
@@ -8,6 +12,8 @@ import java.io.Serializable;
 import java.util.List;
 
 
+@Setter
+@Getter
 @Entity
 public class Warehouse implements Serializable {
 
@@ -17,13 +23,13 @@ public class Warehouse implements Serializable {
     private String title;
     private String address;
     @OneToMany(mappedBy = "warehouse", cascade = CascadeType.ALL)
-    @LazyCollection(LazyCollectionOption.FALSE)
+    @Fetch(FetchMode.SELECT)
     private List<Puzzle> inStockPuzzles;
     @OneToMany(mappedBy = "warehouse", cascade = CascadeType.ALL)
-    @LazyCollection(LazyCollectionOption.FALSE)
+    @Fetch(FetchMode.SELECT)
     private List<BoardGame> inStockBoardGames;
     @OneToMany(mappedBy = "warehouse", cascade = CascadeType.ALL)
-    @LazyCollection(LazyCollectionOption.FALSE)
+    @Fetch(FetchMode.SELECT)
     private List<Dice> inStockDices;
 
     public Warehouse() {
@@ -47,54 +53,6 @@ public class Warehouse implements Serializable {
     @Override
     public String toString() {
         return title;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public List<Puzzle> getInStockPuzzles() {
-        return inStockPuzzles;
-    }
-
-    public void setInStockPuzzles(List<Puzzle> inStockPuzzles) {
-        this.inStockPuzzles = inStockPuzzles;
-    }
-
-    public List<BoardGame> getInStockBoardGames() {
-        return inStockBoardGames;
-    }
-
-    public void setInStockBoardGames(List<BoardGame> inStockBoardGames) {
-        this.inStockBoardGames = inStockBoardGames;
-    }
-
-    public List<Dice> getInStockDices() {
-        return inStockDices;
-    }
-
-    public void setInStockDices(List<Dice> inStockDices) {
-        this.inStockDices = inStockDices;
     }
 
 

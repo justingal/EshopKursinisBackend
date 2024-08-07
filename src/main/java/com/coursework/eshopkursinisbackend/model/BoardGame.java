@@ -1,12 +1,16 @@
 package com.coursework.eshopkursinisbackend.model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
 
 @Entity
 public class BoardGame extends Product {
+    @Setter
+    @Getter
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "product_gen")
     private int id;
@@ -15,6 +19,7 @@ public class BoardGame extends Product {
 
     @OneToMany(mappedBy = "boardGame", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Review> reviews;
+    @Getter
     private String playersQuantity;
     private String gameDuration;
 
@@ -51,38 +56,5 @@ public class BoardGame extends Product {
         this.playersQuantity = playersQuantity;
         this.gameDuration = gameDuration;
     }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getPlayersQuantity() {
-        return playersQuantity;
-    }
-
-    public void setPlayersQuantity(String playersQuantity) {
-        this.playersQuantity = playersQuantity;
-    }
-
-    public String getGameDuration() {
-        return gameDuration;
-    }
-
-    public void setGameDuration(String gameDuration) {
-        this.gameDuration = gameDuration;
-    }
-
-    public List<Review> getReviews() {
-        return reviews;
-    }
-
-    public void setReviews(List<Review> reviews) {
-        this.reviews = reviews;
-    }
-
 
 }

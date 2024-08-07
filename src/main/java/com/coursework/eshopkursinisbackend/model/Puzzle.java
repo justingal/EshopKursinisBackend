@@ -1,10 +1,14 @@
 package com.coursework.eshopkursinisbackend.model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
 
+@Getter
+@Setter
 @Entity
 public class Puzzle extends Product {
 
@@ -68,38 +72,6 @@ public class Puzzle extends Product {
     @Override
     public void setId(int id) {
         this.id = id;
-    }
-
-    public int getPiecesQuantity() {
-        return piecesQuantity;
-    }
-
-    public void setPiecesQuantity(int piecesQuantity) {
-        this.piecesQuantity = piecesQuantity;
-    }
-
-    public String getPuzzleSize() {
-        return puzzleSize;
-    }
-
-    public void setPuzzleSize(String puzzleSize) {
-        this.puzzleSize = puzzleSize;
-    }
-
-    public String getPuzzleMaterial() {
-        return puzzleMaterial;
-    }
-
-    public void setPuzzleMaterial(String puzzleMaterial) {
-        this.puzzleMaterial = puzzleMaterial;
-    }
-
-    public List<Review> getReviews() {
-        return reviews;
-    }
-
-    public void setReviews(List<Review> reviews) {
-        this.reviews = reviews;
     }
 
 

@@ -2,10 +2,14 @@ package com.coursework.eshopkursinisbackend.model;
 
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Embeddable;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Setter
+@Getter
 @Embeddable
 
 public class ShoppingCart {
@@ -18,14 +22,6 @@ public class ShoppingCart {
     }
 
     public ShoppingCart(List<CartItem> items) {
-        this.items = items;
-    }
-
-    public List<CartItem> getItems() {
-        return items;
-    }
-
-    public void setItems(List<CartItem> items) {
         this.items = items;
     }
 

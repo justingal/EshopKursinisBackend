@@ -2,11 +2,15 @@ package com.coursework.eshopkursinisbackend.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.List;
 
 
+@Setter
+@Getter
 @Entity
 public class Manager extends User {
     @OneToMany(mappedBy = "responsibleManager")
@@ -34,38 +38,6 @@ public class Manager extends User {
         this.employeeId = employeeId;
         this.medCertificate = medCertificate;
         this.employmentDate = employmentDate;
-    }
-
-    public String getEmployeeId() {
-        return employeeId;
-    }
-
-    public void setEmployeeId(String employeeId) {
-        this.employeeId = employeeId;
-    }
-
-    public String getMedCertificate() {
-        return medCertificate;
-    }
-
-    public void setMedCertificate(String medCertificate) {
-        this.medCertificate = medCertificate;
-    }
-
-    public LocalDate getEmploymentDate() {
-        return employmentDate;
-    }
-
-    public void setEmploymentDate(LocalDate employmentDate) {
-        this.employmentDate = employmentDate;
-    }
-
-    public List<CustomerOrder> getManagedOrders() {
-        return managedOrders;
-    }
-
-    public void setManagedOrders(List<CustomerOrder> managedOrders) {
-        this.managedOrders = managedOrders;
     }
 
     public String toString() {
