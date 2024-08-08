@@ -106,7 +106,7 @@ public class UserRest {
     @DeleteMapping(value = "/deleteUser/{id}")
     public ResponseEntity<String> deleteUser(@PathVariable(name = "id") int id) {
         try {
-            User currentUser = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
+            userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
             userRepository.deleteById(id);
 
             return new ResponseEntity<>("User with id = " + id + " was successfully deleted", HttpStatus.OK);

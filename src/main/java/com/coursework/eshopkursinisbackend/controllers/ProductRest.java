@@ -152,8 +152,7 @@ public class ProductRest {
     @DeleteMapping(value = "/deleteProduct/{id}")
     public ResponseEntity<String> deleteProduct(@PathVariable(name = "id") int id) {
         try {
-            Product product = productRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
-
+            productRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
 
             productRepository.deleteById(id);
             return new ResponseEntity<>("User with id = " + id + " was successfully deleted", HttpStatus.OK);
@@ -183,4 +182,5 @@ public class ProductRest {
             return new ResponseEntity<>(e.getConstraintViolations().toString(), HttpStatus.BAD_REQUEST);
         }
     }
+
 }
