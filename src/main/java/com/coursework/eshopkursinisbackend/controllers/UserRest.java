@@ -97,7 +97,7 @@ public class UserRest {
             BaseUserDTO userDTO = UserMapper.toDTO(savedUser);
             return new ResponseEntity<>(userDTO, HttpStatus.CREATED);
         } catch (IOException e) {
-            return new ResponseEntity<>("Invalid user type or JSON format", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         } catch (ConstraintViolationException e) {
             return new ResponseEntity<>(e.getConstraintViolations().toString(), HttpStatus.BAD_REQUEST);
         }
@@ -191,7 +191,7 @@ public class UserRest {
             BaseUserDTO userDTO = UserMapper.toDTO(savedUser);
             return new ResponseEntity<>(userDTO, HttpStatus.OK);
         } catch (IOException e) {
-            return new ResponseEntity<>("Invalid user type or JSON format", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         } catch (ConstraintViolationException e) {
             return new ResponseEntity<>(e.getConstraintViolations().toString(), HttpStatus.BAD_REQUEST);
         }
