@@ -31,6 +31,7 @@ public class UserMapper {
         dto.setSurname(customer.getSurname());
         dto.setAddress(customer.getAddress());
         dto.setCardNo(customer.getCardNo());
+        dto.setId(customer.getId());
         return dto;
     }
 
@@ -43,6 +44,7 @@ public class UserMapper {
         dto.setEmployeeId(manager.getEmployeeId());
         dto.setMedCertificate(manager.getMedCertificate());
         dto.setEmploymentDate(manager.getEmploymentDate());
+        dto.setId(manager.getId());
         return dto;
     }
 
@@ -55,6 +57,7 @@ public class UserMapper {
         dto.setEmployeeId(admin.getEmployeeId());
         dto.setMedCertificate(admin.getMedCertificate());
         dto.setEmploymentDate(admin.getEmploymentDate());
+        dto.setId(admin.getId());
         return dto;
     }
 }

@@ -18,7 +18,6 @@ import java.util.List;
 @Setter
 @Getter
 @Entity
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Warehouse implements Serializable {
 
     @Id

@@ -10,6 +10,9 @@ import java.time.LocalDate;
 @Getter
 @Setter
 public class BaseUserDTO {
+    @NotBlank(message = "ID is required")
+    private int id;
+
     @NotBlank(message = "Username is required")
     private String username;
 
