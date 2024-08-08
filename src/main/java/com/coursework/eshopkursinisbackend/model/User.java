@@ -1,6 +1,10 @@
 package com.coursework.eshopkursinisbackend.model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
@@ -9,6 +13,8 @@ import java.time.LocalDate;
 import java.util.List;
 
 
+@Getter
+@Setter
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "DTYPE", discriminatorType = DiscriminatorType.STRING)
@@ -18,13 +24,13 @@ public abstract class User implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
     @Column(unique = true)
-    String login;
+    String username;
     String password;
     LocalDate birthDate;
     String name;
     String surname;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    @LazyCollection(LazyCollectionOption.FALSE)
+    @Fetch(FetchMode.SELECT)
     List<Comment> myComments;
 
 
@@ -33,7 +39,7 @@ public abstract class User implements Serializable {
 
     public User(int id, String login, String password, LocalDate birthDate, String name, String surname, List<Comment> myComments) {
         this.id = id;
-        this.login = login;
+        this.username = login;
         this.password = password;
         this.birthDate = birthDate;
         this.name = name;
@@ -42,7 +48,7 @@ public abstract class User implements Serializable {
     }
 
     public User(String login, String password, LocalDate birthDate, String name, String surname) {
-        this.login = login;
+        this.username = login;
         this.password = password;
         this.birthDate = birthDate;
         this.name = name;
@@ -51,71 +57,14 @@ public abstract class User implements Serializable {
 
     public User(int id, String login, String password, LocalDate birthDate) {
         this.id = id;
-        this.login = login;
+        this.username = login;
         this.password = password;
         this.birthDate = birthDate;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public LocalDate getBirthDate() {
-        return birthDate;
-    }
-
-    public void setBirthDate(LocalDate birthDate) {
-        this.birthDate = birthDate;
-    }
-
-    public String getName() {
-        return name;
     }
 
     public String getFullName() {
         return name + " " + surname;
     }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
-
-    public List<Comment> getMyComments() {
-        return myComments;
-    }
-
-    public void setMyComments(List<Comment> myComments) {
-        this.myComments = myComments;
-    }
-
 
     @Override
     public String toString() {

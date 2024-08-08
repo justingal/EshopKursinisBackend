@@ -2,10 +2,16 @@ package com.coursework.eshopkursinisbackend.model;
 
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDate;
 
 
+@Getter
+@Setter
 @Entity
 @DiscriminatorValue("Admin")
 public class Admin extends Manager {
@@ -13,13 +19,12 @@ public class Admin extends Manager {
         super(employeeId, medCertificate, employmentDate);
     }
 
-    public Admin(String login, String password, LocalDate birthDate, String name, String surname) {
-        super(login, password, birthDate, name, surname);
+    public Admin(String username, String password, LocalDate birthDate, String name, String surname) {
+        super(username, password, birthDate, name, surname);
     }
 
-    public Admin(String login, String password, LocalDate birthDate, String name, String surname, String employeeId, String medCertificate, LocalDate employmentDate) {
-        super(login, password, birthDate, name, surname, employeeId, medCertificate, employmentDate);
-
+    public Admin(String username, String password, LocalDate birthDate, String name, String surname, String employeeId, String medCertificate, LocalDate employmentDate) {
+        super(username, password, birthDate, name, surname, employeeId, medCertificate, employmentDate);
     }
 
     public Admin() {

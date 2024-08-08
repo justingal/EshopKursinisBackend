@@ -22,7 +22,7 @@ public class WarehouseRest {
         return ResponseEntity.ok(warehouseRepository.findAll());
     }
 
-    @GetMapping(value = "/getWarehouseById/{id}")
+    @GetMapping(value = "/warehouse/{id}")
     public EntityModel<Warehouse> getWarehouseById(@PathVariable(name = "id") int id) {
         Warehouse warehouse = warehouseRepository.findById(id).orElseThrow(() -> new WarehouseNotFoundException(id));
         return EntityModel.of(warehouse,
