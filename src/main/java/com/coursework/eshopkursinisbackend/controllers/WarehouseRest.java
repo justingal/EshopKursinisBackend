@@ -38,6 +38,7 @@ public class WarehouseRest {
 
     @PutMapping(value = "updateWarehouse/{id}")
     public ResponseEntity<Warehouse> updateWarehouse(@PathVariable(name = "id") int id, @RequestBody Warehouse warehouseInfo) {
+
         Warehouse warehouse = warehouseRepository.findById(id).orElseThrow(() -> new WarehouseNotFoundException(id));
         warehouse.setTitle(warehouseInfo.getTitle());
         warehouse.setAddress(warehouseInfo.getAddress());
