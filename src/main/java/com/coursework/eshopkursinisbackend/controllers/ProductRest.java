@@ -5,6 +5,10 @@ import com.coursework.eshopkursinisbackend.dto.ProductDTO;
 import com.coursework.eshopkursinisbackend.exceptions.ProductNotFoundException;
 import com.coursework.eshopkursinisbackend.exceptions.UserNotFoundException;
 import com.coursework.eshopkursinisbackend.model.*;
+import com.coursework.eshopkursinisbackend.repos.BoardGameRepository;
+import com.coursework.eshopkursinisbackend.repos.PuzzleRepository;
+import com.coursework.eshopkursinisbackend.repos.DiceRepository;
+
 import com.coursework.eshopkursinisbackend.repos.ProductRepository;
 import com.coursework.eshopkursinisbackend.util.ProductMapper;
 import com.coursework.eshopkursinisbackend.util.UserMapper;
@@ -30,6 +34,13 @@ import java.util.stream.Collectors;
 public class ProductRest {
     @Autowired
     private ProductRepository productRepository;
+    @Autowired
+    private BoardGameRepository boardGameRepository;
+    @Autowired
+    private PuzzleRepository puzzleRepository;
+    @Autowired
+    private DiceRepository diceRepository;
+
 
     @Autowired
     private Validator validator;
@@ -152,11 +163,25 @@ public class ProductRest {
     @DeleteMapping(value = "/deleteProduct/{id}")
     public ResponseEntity<String> deleteProduct(@PathVariable(name = "id") int id) {
         try {
-            Product product = productRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
+            BoardGame boardGame = boardGameRepository.findById(id).orElse(null);
+            if (boardGame != null) {
+                detachAndDelete(boardGame);
+                return new ResponseEntity<>("BoardGame with id = " + id + " was successfully deleted", HttpStatus.OK);
+            }
 
+            Puzzle puzzle = puzzleRepository.findById(id).orElse(null);
+            if (puzzle != null) {
+                detachAndDelete(puzzle);
+                return new ResponseEntity<>("Puzzle with id = " + id + " was successfully deleted", HttpStatus.OK);
+            }
 
-            productRepository.deleteById(id);
-            return new ResponseEntity<>("User with id = " + id + " was successfully deleted", HttpStatus.OK);
+            Dice dice = diceRepository.findById(id).orElse(null);
+            if (dice != null) {
+                detachAndDelete(dice);
+                return new ResponseEntity<>("Dice with id = " + id + " was successfully deleted", HttpStatus.OK);
+            }
+
+            return new ResponseEntity<>("Product with id = " + id + " not found", HttpStatus.NOT_FOUND);
         } catch (ConstraintViolationException e) {
             return new ResponseEntity<>(e.getConstraintViolations().toString(), HttpStatus.BAD_REQUEST);
         }
@@ -182,5 +207,22 @@ public class ProductRest {
         } catch (ConstraintViolationException e) {
             return new ResponseEntity<>(e.getConstraintViolations().toString(), HttpStatus.BAD_REQUEST);
         }
+
+
     }
+    public void detachAndDelete(Product product) {
+        if (product instanceof BoardGame) {
+            BoardGame boardGame = (BoardGame) product;
+            boardGame.setWarehouse(null);  // Detach warehouse
+            boardGameRepository.delete(boardGame);
+        } else if (product instanceof Puzzle) {
+            Puzzle puzzle = (Puzzle) product;
+            puzzle.setWarehouse(null);  // Detach warehouse
+            puzzleRepository.delete(puzzle);
+        } else if (product instanceof Dice) {
+            Dice dice = (Dice) product;
+            dice.setWarehouse(null);  // Detach warehouse
+            diceRepository.delete(dice);
+        }
+        }
 }
