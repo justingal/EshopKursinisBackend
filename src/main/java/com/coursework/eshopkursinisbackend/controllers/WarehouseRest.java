@@ -48,7 +48,7 @@ public class WarehouseRest {
 
     @DeleteMapping(value = "deleteWarehouse/{id}")
     public ResponseEntity<String> deleteWarehouse(@PathVariable(name = "id") int id) {
-        Warehouse warehouse = warehouseRepository.findById(id).orElseThrow(() -> new WarehouseNotFoundException(id));
+        warehouseRepository.findById(id).orElseThrow(() -> new WarehouseNotFoundException(id));
         warehouseRepository.deleteById(id);
         return new ResponseEntity<>("Warehouse with id = " + id + " was successfully deleted", HttpStatus.OK);
     }
