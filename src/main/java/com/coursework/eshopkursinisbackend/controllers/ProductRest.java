@@ -26,7 +26,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -51,25 +53,60 @@ public class ProductRest {
 
     @GetMapping(value = "/products")
     public ResponseEntity<List<ProductDTO>> getAllProducts() {
-        List<Product> products = productRepository.findAll();
-        List<ProductDTO> productDTOs = products.stream().map(ProductMapper::toDTO).collect(Collectors.toList());
-        return ResponseEntity.ok(productDTOs);
-    }
+        List<BoardGame> boardGames = boardGameRepository.findAll();
+        List<Puzzle> puzzles = puzzleRepository.findAll();
+        List<Dice> dices = diceRepository.findAll();
 
+        // Map each entity type to a ProductDTO
+        List<ProductDTO> boardGameDTOs = boardGames.stream().map(ProductMapper::toDTO).collect(Collectors.toList());
+        List<ProductDTO> puzzleDTOs = puzzles.stream().map(ProductMapper::toDTO).collect(Collectors.toList());
+        List<ProductDTO> diceDTOs = dices.stream().map(ProductMapper::toDTO).collect(Collectors.toList());
+
+        // Combine all the lists into one
+        List<ProductDTO> allProductDTOs = new ArrayList<>();
+        allProductDTOs.addAll(boardGameDTOs);
+        allProductDTOs.addAll(puzzleDTOs);
+        allProductDTOs.addAll(diceDTOs);
+
+        return ResponseEntity.ok(allProductDTOs);
+    }
     @GetMapping(value = "/product/{id}")
     public ResponseEntity<EntityModel<ProductDTO>> getProductById(@PathVariable(name = "id") int id) {
-        Product product = productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException(id));
-        ProductDTO productDTO = ProductMapper.toDTO(product);
-        return ResponseEntity.ok(EntityModel.of(productDTO,
+        Optional<BoardGame> boardGameOpt = boardGameRepository.findById(id);
+        Optional<Puzzle> puzzleOpt = puzzleRepository.findById(id);
+        Optional<Dice> diceOpt = diceRepository.findById(id);
+
+        ProductDTO productDTO = null;
+
+        if (boardGameOpt.isPresent()) {
+            productDTO = ProductMapper.toDTO(boardGameOpt.get());
+        } else if (puzzleOpt.isPresent()) {
+            productDTO = ProductMapper.toDTO(puzzleOpt.get());
+        } else if (diceOpt.isPresent()) {
+            productDTO = ProductMapper.toDTO(diceOpt.get());
+        } else {
+            throw new ProductNotFoundException(id);
+        }
+
+        return ResponseEntity.ok(EntityModel.of(
+                productDTO,
                 WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ProductRest.class).getProductById(id)).withSelfRel(),
-                WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ProductRest.class).getProductById(id)).withRel("Users")));
+                WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ProductRest.class).getProductById(id)).withRel("products"))
+        );
     }
 
     @PutMapping(value = "updateProduct/{id}")
     public ResponseEntity<?> updateProduct(@PathVariable(name = "id") int id, @Valid @RequestBody String productInfo) {
         try {
-            Product productToUpdate = productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException(id));
-            if (productToUpdate instanceof BoardGame) {
+            // Retrieve the product by ID, throwing an exception if not found
+            Optional<BoardGame> boardGameOpt = boardGameRepository.findById(id);
+            Optional<Puzzle> puzzleOpt = puzzleRepository.findById(id);
+            Optional<Dice> diceOpt = diceRepository.findById(id);
+
+            Product productToUpdate;
+
+            if (boardGameOpt.isPresent()) {
+                productToUpdate = boardGameOpt.get();
                 BoardGame newBoardGameInfo = objectMapper.readValue(productInfo, BoardGame.class);
                 if (newBoardGameInfo.getTitle() != null) {
                     productToUpdate.setTitle(newBoardGameInfo.getTitle());
@@ -86,15 +123,15 @@ public class ProductRest {
                 if (newBoardGameInfo.getWarehouse() != null) {
                     productToUpdate.setWarehouse(newBoardGameInfo.getWarehouse());
                 }
-                //BG
                 if (newBoardGameInfo.getPlayersQuantity() != null) {
                     ((BoardGame) productToUpdate).setPlayersQuantity(newBoardGameInfo.getPlayersQuantity());
                 }
                 if (newBoardGameInfo.getGameDuration() != null) {
                     ((BoardGame) productToUpdate).setGameDuration(newBoardGameInfo.getGameDuration());
                 }
-            }
-            if (productToUpdate instanceof Puzzle) {
+
+            } else if (puzzleOpt.isPresent()) {
+                productToUpdate = puzzleOpt.get();
                 Puzzle newPuzzleInfo = objectMapper.readValue(productInfo, Puzzle.class);
 
                 if (newPuzzleInfo.getTitle() != null) {
@@ -112,7 +149,6 @@ public class ProductRest {
                 if (newPuzzleInfo.getWarehouse() != null) {
                     productToUpdate.setWarehouse(newPuzzleInfo.getWarehouse());
                 }
-                //Puzzle
                 if (newPuzzleInfo.getPuzzleMaterial() != null) {
                     ((Puzzle) productToUpdate).setPuzzleMaterial(newPuzzleInfo.getPuzzleMaterial());
                 }
@@ -122,9 +158,11 @@ public class ProductRest {
                 if (newPuzzleInfo.getPiecesQuantity() != 0) {
                     ((Puzzle) productToUpdate).setPiecesQuantity(newPuzzleInfo.getPiecesQuantity());
                 }
-            }
-            if (productToUpdate instanceof Dice) {
+
+            } else if (diceOpt.isPresent()) {
+                productToUpdate = diceOpt.get();
                 Dice newDiceInfo = objectMapper.readValue(productInfo, Dice.class);
+
                 if (newDiceInfo.getTitle() != null) {
                     productToUpdate.setTitle(newDiceInfo.getTitle());
                 }
@@ -140,19 +178,27 @@ public class ProductRest {
                 if (newDiceInfo.getWarehouse() != null) {
                     productToUpdate.setWarehouse(newDiceInfo.getWarehouse());
                 }
-                //BG
                 if (newDiceInfo.getDiceNumber() != 0) {
                     ((Dice) productToUpdate).setDiceNumber(newDiceInfo.getDiceNumber());
                 }
+
+            } else {
+                throw new ProductNotFoundException(id);
             }
 
+            // Validate the updated product
             Set<ConstraintViolation<Product>> violations = validator.validate(productToUpdate);
             if (!violations.isEmpty()) {
                 throw new ConstraintViolationException(violations);
             }
+
+            // Save the updated product
             Product savedProduct = productRepository.saveAndFlush(productToUpdate);
+
+            // Map the saved product to a ProductDTO and return it
             ProductDTO productDTO = ProductMapper.toDTO(savedProduct);
             return new ResponseEntity<>(productDTO, HttpStatus.OK);
+
         } catch (IOException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         } catch (ConstraintViolationException e) {
@@ -213,15 +259,15 @@ public class ProductRest {
     public void detachAndDelete(Product product) {
         if (product instanceof BoardGame) {
             BoardGame boardGame = (BoardGame) product;
-            boardGame.setWarehouse(null);  // Detach warehouse
+            boardGame.setWarehouse(null);
             boardGameRepository.delete(boardGame);
         } else if (product instanceof Puzzle) {
             Puzzle puzzle = (Puzzle) product;
-            puzzle.setWarehouse(null);  // Detach warehouse
+            puzzle.setWarehouse(null);
             puzzleRepository.delete(puzzle);
         } else if (product instanceof Dice) {
             Dice dice = (Dice) product;
-            dice.setWarehouse(null);  // Detach warehouse
+            dice.setWarehouse(null);
             diceRepository.delete(dice);
         }
         }
