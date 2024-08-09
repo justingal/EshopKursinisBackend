@@ -25,7 +25,7 @@ public class ProductDeserializer extends JsonDeserializer<Product> {
             case "BoardGame" -> jp.getCodec().treeToValue(node, BoardGame.class);
             case "Puzzle" -> jp.getCodec().treeToValue(node, Puzzle.class);
             case "Dice" -> jp.getCodec().treeToValue(node, Dice.class);
-            default -> throw new IOException("Invalid user type: " + type);
+            default -> throw new IOException("Invalid Product type: " + type);
         };
     }
 }

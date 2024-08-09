@@ -66,6 +66,13 @@ public class Comment {
         this.replies = new ArrayList<>();
     }
 
+    public Comment(int id, String commentTitle, String commentBody, User user) {
+        this.id = id;
+        this.commentTitle = commentTitle;
+        this.commentBody = commentBody;
+        this.user = user;
+    }
+
     @Override
     public String toString() {
         return user.getName() + " " + user.getSurname() + ":" + commentTitle + ":" + dateCreated;

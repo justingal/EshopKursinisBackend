@@ -1,5 +1,6 @@
 package com.coursework.eshopkursinisbackend.config;
 
+import com.coursework.eshopkursinisbackend.model.Comment;
 import com.coursework.eshopkursinisbackend.model.Product;
 import com.coursework.eshopkursinisbackend.model.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -17,6 +18,7 @@ public class CustomObjectMapper {
         SimpleModule module = new SimpleModule();
         module.addDeserializer(User.class, new UserDeserializer());
         module.addDeserializer(Product.class, new ProductDeserializer());
+        module.addDeserializer(Comment.class, new CommentDeserializer());
         objectMapper.registerModule(module);
         objectMapper.registerModule(new JavaTimeModule());
         return objectMapper;

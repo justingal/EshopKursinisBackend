@@ -1,8 +1,6 @@
 package com.coursework.eshopkursinisbackend.handlers;
 
-import com.coursework.eshopkursinisbackend.exceptions.ProductNotFoundException;
-import com.coursework.eshopkursinisbackend.exceptions.UserNotFoundException;
-import com.coursework.eshopkursinisbackend.exceptions.WarehouseNotFoundException;
+import com.coursework.eshopkursinisbackend.exceptions.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -26,5 +24,16 @@ public class GlobalExceptionHandler {
     public ResponseEntity<?> handleProductNotFoundException(ProductNotFoundException ex, WebRequest request) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(OrderNotFoundException.class)
+    public ResponseEntity<?> handleOrderNotFoundException(OrderNotFoundException ex, WebRequest request) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(CommentNotFoundException.class)
+    public ResponseEntity<?> handleCommentNotFoundException(CommentNotFoundException ex, WebRequest request) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
 
 }
