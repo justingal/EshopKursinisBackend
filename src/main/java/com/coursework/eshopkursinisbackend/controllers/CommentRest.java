@@ -39,23 +39,15 @@ public class CommentRest {
         this.commentRepository = commentRepository;
     }
 
-    @PostMapping(value = "/createComment")
-    public ResponseEntity<?> createComment(@Valid @RequestBody String commentInfo) {
-        try {
-            Comment comment = objectMapper.readValue(commentInfo, Comment.class);
-
-            Set<ConstraintViolation<Comment>> violations = validator.validate(comment);
-            if (!violations.isEmpty()) {
-                throw new ConstraintViolationException(violations);
-            }
-
-            Comment savedComment = commentRepository.saveAndFlush(comment);
-            CommentDTO commentDTO = CommentMapper.toDTO(savedComment);
-            return new ResponseEntity<>(commentDTO, HttpStatus.CREATED);
-        } catch (IOException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-        } catch (ConstraintViolationException e) {
-            return new ResponseEntity<>(e.getConstraintViolations().toString(), HttpStatus.BAD_REQUEST);
+    @PostMapping(value = "/addComment")
+    public ResponseEntity<CommentDTO> addComment(@RequestBody @Valid String commentJson) throws IOException {
+        Comment comment = objectMapper.readValue(commentJson, Comment.class);
+        Set<ConstraintViolation<Comment>> violations = validator.validate(comment);
+        if (!violations.isEmpty()) {
+            throw new ConstraintViolationException(violations);
         }
+        Comment savedComment = commentRepository.saveAndFlush(comment);
+        return ResponseEntity.ok(CommentMapper.toCommentDTO(savedComment));
     }
+
 }

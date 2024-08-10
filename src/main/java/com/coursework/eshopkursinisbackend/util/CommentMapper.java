@@ -17,7 +17,7 @@ public class CommentMapper {
         }
     }
 
-    private static CommentDTO toCommentDTO(Comment comment) {
+    public static CommentDTO toCommentDTO(Comment comment) {
         CommentDTO commentDTO = new CommentDTO();
         commentDTO.setId(comment.getId());
         commentDTO.setCommentBody(comment.getCommentBody());
