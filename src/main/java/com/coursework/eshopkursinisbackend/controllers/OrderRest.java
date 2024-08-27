@@ -2,14 +2,9 @@ package com.coursework.eshopkursinisbackend.controllers;
 
 import com.coursework.eshopkursinisbackend.dto.OrderDTO;
 import com.coursework.eshopkursinisbackend.exceptions.OrderNotFoundException;
-import com.coursework.eshopkursinisbackend.exceptions.WarehouseNotFoundException;
 import com.coursework.eshopkursinisbackend.model.CustomerOrder;
-import com.coursework.eshopkursinisbackend.model.User;
-import com.coursework.eshopkursinisbackend.model.Warehouse;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
+import com.coursework.eshopkursinisbackend.repos.OrderRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.persistence.criteria.Order;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
@@ -21,7 +16,6 @@ import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.coursework.eshopkursinisbackend.repos.OrderRepository;
 
 import java.io.IOException;
 import java.util.List;
@@ -44,7 +38,7 @@ public class OrderRest {
     public ResponseEntity<List<OrderDTO>> getAllOrders() {
         List<CustomerOrder> orders = orderRepository.findAll();
         List<OrderDTO> orderDTOs = orders.stream()
-                .map(order -> new OrderDTO(order.getId(), order.getDateCreated(), order.getOrderStatus(), order.getTotalPrice() ))
+                .map(order -> new OrderDTO(order.getId(), order.getDateCreated(), order.getOrderStatus(), order.getTotalPrice()))
                 .collect(Collectors.toList());
         return ResponseEntity.ok(orderDTOs);
     }
@@ -117,8 +111,12 @@ public class OrderRest {
     public ResponseEntity<?> updateOrder(@PathVariable(name = "id") int id, @RequestBody CustomerOrder orderInfo) {
 
         CustomerOrder order = orderRepository.findById(id).orElseThrow(() -> new OrderNotFoundException(id));
-        if ( orderInfo.getOrderStatus() != null) {order.setOrderStatus(orderInfo.getOrderStatus());}
-        if ( orderInfo.getResponsibleManager() != null) {order.setResponsibleManager(orderInfo.getResponsibleManager());}
+        if (orderInfo.getOrderStatus() != null) {
+            order.setOrderStatus(orderInfo.getOrderStatus());
+        }
+        if (orderInfo.getResponsibleManager() != null) {
+            order.setResponsibleManager(orderInfo.getResponsibleManager());
+        }
 
         Set<ConstraintViolation<CustomerOrder>> violations = validator.validate(order);
         if (!violations.isEmpty()) {

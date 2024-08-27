@@ -1,6 +1,9 @@
 package com.coursework.eshopkursinisbackend.config;
 
-import com.coursework.eshopkursinisbackend.model.*;
+import com.coursework.eshopkursinisbackend.model.BoardGame;
+import com.coursework.eshopkursinisbackend.model.Dice;
+import com.coursework.eshopkursinisbackend.model.Product;
+import com.coursework.eshopkursinisbackend.model.Puzzle;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;

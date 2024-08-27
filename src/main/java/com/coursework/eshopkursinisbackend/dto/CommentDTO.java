@@ -24,7 +24,4 @@ public class CommentDTO {
     private LocalDate dateCreated;
 
 
-
-
-
 }

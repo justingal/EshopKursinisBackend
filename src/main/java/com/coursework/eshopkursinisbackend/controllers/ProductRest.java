@@ -1,17 +1,16 @@
 package com.coursework.eshopkursinisbackend.controllers;
 
-import com.coursework.eshopkursinisbackend.dto.BaseUserDTO;
 import com.coursework.eshopkursinisbackend.dto.ProductDTO;
 import com.coursework.eshopkursinisbackend.exceptions.ProductNotFoundException;
-import com.coursework.eshopkursinisbackend.exceptions.UserNotFoundException;
-import com.coursework.eshopkursinisbackend.model.*;
+import com.coursework.eshopkursinisbackend.model.BoardGame;
+import com.coursework.eshopkursinisbackend.model.Dice;
+import com.coursework.eshopkursinisbackend.model.Product;
+import com.coursework.eshopkursinisbackend.model.Puzzle;
 import com.coursework.eshopkursinisbackend.repos.BoardGameRepository;
-import com.coursework.eshopkursinisbackend.repos.PuzzleRepository;
 import com.coursework.eshopkursinisbackend.repos.DiceRepository;
-
 import com.coursework.eshopkursinisbackend.repos.ProductRepository;
+import com.coursework.eshopkursinisbackend.repos.PuzzleRepository;
 import com.coursework.eshopkursinisbackend.util.ProductMapper;
-import com.coursework.eshopkursinisbackend.util.UserMapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
@@ -57,12 +56,10 @@ public class ProductRest {
         List<Puzzle> puzzles = puzzleRepository.findAll();
         List<Dice> dices = diceRepository.findAll();
 
-        // Map each entity type to a ProductDTO
         List<ProductDTO> boardGameDTOs = boardGames.stream().map(ProductMapper::toDTO).collect(Collectors.toList());
         List<ProductDTO> puzzleDTOs = puzzles.stream().map(ProductMapper::toDTO).collect(Collectors.toList());
         List<ProductDTO> diceDTOs = dices.stream().map(ProductMapper::toDTO).collect(Collectors.toList());
 
-        // Combine all the lists into one
         List<ProductDTO> allProductDTOs = new ArrayList<>();
         allProductDTOs.addAll(boardGameDTOs);
         allProductDTOs.addAll(puzzleDTOs);
@@ -70,6 +67,7 @@ public class ProductRest {
 
         return ResponseEntity.ok(allProductDTOs);
     }
+
     @GetMapping(value = "/product/{id}")
     public ResponseEntity<EntityModel<ProductDTO>> getProductById(@PathVariable(name = "id") int id) {
         Optional<BoardGame> boardGameOpt = boardGameRepository.findById(id);
@@ -98,7 +96,6 @@ public class ProductRest {
     @PutMapping(value = "updateProduct/{id}")
     public ResponseEntity<?> updateProduct(@PathVariable(name = "id") int id, @Valid @RequestBody String productInfo) {
         try {
-            // Retrieve the product by ID, throwing an exception if not found
             Optional<BoardGame> boardGameOpt = boardGameRepository.findById(id);
             Optional<Puzzle> puzzleOpt = puzzleRepository.findById(id);
             Optional<Dice> diceOpt = diceRepository.findById(id);
@@ -186,16 +183,13 @@ public class ProductRest {
                 throw new ProductNotFoundException(id);
             }
 
-            // Validate the updated product
             Set<ConstraintViolation<Product>> violations = validator.validate(productToUpdate);
             if (!violations.isEmpty()) {
                 throw new ConstraintViolationException(violations);
             }
 
-            // Save the updated product
             Product savedProduct = productRepository.saveAndFlush(productToUpdate);
 
-            // Map the saved product to a ProductDTO and return it
             ProductDTO productDTO = ProductMapper.toDTO(savedProduct);
             return new ResponseEntity<>(productDTO, HttpStatus.OK);
 
@@ -234,7 +228,6 @@ public class ProductRest {
     }
 
 
-
     @PostMapping(value = "/createProduct")
     public ResponseEntity<?> createProduct(@Valid @RequestBody String productInfo) {
         try {
@@ -256,6 +249,7 @@ public class ProductRest {
 
 
     }
+
     public void detachAndDelete(Product product) {
         if (product instanceof BoardGame) {
             BoardGame boardGame = (BoardGame) product;
@@ -270,5 +264,5 @@ public class ProductRest {
             dice.setWarehouse(null);
             diceRepository.delete(dice);
         }
-        }
+    }
 }

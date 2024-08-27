@@ -7,7 +7,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class DiceDTO extends ProductDTO{
+public class DiceDTO extends ProductDTO {
     @NotBlank(message = "Dice number is required")
     private int diceNumber;
 

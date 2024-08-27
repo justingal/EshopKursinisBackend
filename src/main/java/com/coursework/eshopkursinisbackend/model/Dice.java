@@ -14,13 +14,13 @@ import java.util.List;
 @Entity
 public class Dice extends Product {
 
+    int diceNumber;
     @OneToMany(mappedBy = "dice", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JsonManagedReference("dice-review")
     private List<Review> reviews;
     @ManyToOne
     @JsonBackReference("order-dice")
     private CustomerOrder customerOrder;
-    int diceNumber;
 
     public Dice(String title, String description, String author, Warehouse warehouse, double price) {
         super(title, description, author, warehouse, price);

@@ -31,6 +31,7 @@ public class BoardGame extends Product {
     public BoardGame() {
 
     }
+
     public BoardGame(String title, String description, String author, Warehouse warehouse, double price, String playersQuantity, int id, String gameDuration, List<Review> reviews) {
         super(title, description, author, warehouse, price);
         this.playersQuantity = playersQuantity;

@@ -1,10 +1,12 @@
 package com.coursework.eshopkursinisbackend.model;
 
 import jakarta.persistence.*;
-import jakarta.persistence.CascadeType;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.*;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -49,6 +51,7 @@ public class Comment {
         this.parentComment = parentComment;
         this.user = user;
     }
+
     public Comment(String commentTitle, String commentBody, User user) {
         this.commentTitle = commentTitle;
         this.commentBody = commentBody;

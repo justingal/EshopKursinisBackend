@@ -66,7 +66,7 @@ public class UserRest {
                 WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserRest.class).getAllUsers()).withRel("Users")));
     }
 
-    @PostMapping(value = "/getUserByCredentials")
+    @PostMapping(value = "/user/getUserByCredentials")
     public ResponseEntity<?> getUserByCredentials(@Valid @RequestBody CredentialsDTO credentials) {
         String username = credentials.getUsername();
         String password = credentials.getPassword();

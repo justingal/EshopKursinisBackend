@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class BoardGameDTO extends ProductDTO{
+public class BoardGameDTO extends ProductDTO {
     @NotBlank(message = "Players Quantity is required")
     private String playersQuantity;
 

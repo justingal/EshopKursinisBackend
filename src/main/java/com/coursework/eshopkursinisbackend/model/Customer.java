@@ -1,7 +1,6 @@
 package com.coursework.eshopkursinisbackend.model;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import lombok.Getter;
 import lombok.Setter;

@@ -1,7 +1,6 @@
 package com.coursework.eshopkursinisbackend.config;
 
 import com.coursework.eshopkursinisbackend.model.Comment;
-
 import com.coursework.eshopkursinisbackend.model.Review;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
